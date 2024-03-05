@@ -24,20 +24,19 @@ always@(posedge clock)
 always_comb
 	begin
 		NS = PS;
-		case(PS)
+		unique case(PS)
 
 		INITIAL :begin
-					if(ALE)
-						NS = START;
-
-				end
+				if(ALE)
+					NS = START;
+			  end
 
 		START : begin
-					if(!wrb)
-						NS = P_WRITE;
-					else if(!rdb)
-						NS=P_READ;
-				end
+				if(!wrb)
+					NS = P_WRITE;
+				else if(!rdb)
+					NS=P_READ;
+			end
 
 		P_WRITE : NS = TRISTATE;
 

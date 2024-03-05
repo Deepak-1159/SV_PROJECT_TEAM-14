@@ -1,11 +1,11 @@
-module FSM(clock,reset,ALE,rdb,wrb,IOM,OEb,WR_RDb);
-//parameter IOM = '0;
-input logic clock,reset,ALE,rdb,wrb,IOM;
+module FSM(clock,reset,ALE,rdb,wrb,OEb,WR_RDb);
+parameter IOM = '0;
+input logic clock,reset,ALE,rdb,wrb;
 
 output logic OEb,WR_RDb;
 
 
-typedef enum logic [5:0]{INITIAL = 6'b000001,START = 6'b000010,P_READ = 6'b000100,P_WRITE = 6'b001000,TRISTATE= 6'b010000,WAITING = 6'b100000} state;
+typedef enum logic [4:0]{INITIAL = 5'b00001,START = 5'b00010,P_READ = 5'b00100,P_WRITE = 5'b01000,TRISTATE= 5'b10000} state;
 
 
 state PS,NS;
@@ -33,19 +33,17 @@ always_comb
 				end
 
 		START : begin
-					if(rdb && !wrb)
+					if(!wrb)
 						NS = P_WRITE;
-					else if(!rdb && wrb)
+					else if(!rdb)
 						NS=P_READ;
 				end
 
-		P_WRITE : NS = WAITING;
+		P_WRITE : NS = TRISTATE;
 
 		P_READ : NS = TRISTATE;
 
 		TRISTATE : NS = INITIAL;
-
-		WAITING : NS = INITIAL;
 
 		endcase
 	end
@@ -53,7 +51,7 @@ always_comb
 
 //OUTPUT LOGIC
 
-assign OEb    = (PS == TRISTATE)?'1:'0;
+assign OEb    = (PS == P_READ)?'0:'1;
 assign WR_RDb = (PS == P_WRITE)?'1:'0;
 
 

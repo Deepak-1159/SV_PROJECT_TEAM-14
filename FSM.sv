@@ -49,9 +49,16 @@ always_comb
 
 
 //OUTPUT LOGIC
-
+/*
 assign OEb    = (PS == P_READ)?'0:'1;
 assign WR_RDb = (PS == P_WRITE)?'1:'0;
-
-
+*/
+always_comb 
+	begin
+		{OEb,WR_RDb} ='0;
+		case (PS) 
+			P_READ : OEb = '1;
+			P_WRITE : WR_RDb = '1;
+		endcase
+	end
 endmodule

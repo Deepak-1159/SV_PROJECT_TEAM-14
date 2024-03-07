@@ -12,7 +12,7 @@ state PS,NS;
 
 //PRESENT STATE LOGIC
 
-always@(posedge clock)
+always_ff @(posedge clock)
 	begin
 		if(reset)
 			PS <= INITIAL;

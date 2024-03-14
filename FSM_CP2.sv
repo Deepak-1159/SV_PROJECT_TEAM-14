@@ -52,7 +52,7 @@ end
 //OUTPUT LOGIC
 always_comb
 begin
-{OEb, WR_RDb, load}='0;
+    {OEb, WR_RDb, load}='0; //Initializing the values
 unique case(PS)
 
     START :   load='1;
